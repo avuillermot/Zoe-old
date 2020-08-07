@@ -1,4 +1,5 @@
 import User, { IIUser } from "./../user/user";
+import moment from "moment";
 
 export default class ServiceUser {
     public async find(where: {}): Promise<IIUser[]> {
@@ -17,5 +18,14 @@ export default class ServiceUser {
         };
         await fn();
         return data;
+    }
+
+    public async setPassword(login: string, password: string): Promise<boolean> {
+        let data = { n: 0, ok: 0 };
+        let fn = async () => {
+            data = await User.updateOne({ username: login }, { password: password });
+        };
+        await fn();
+        return (data.n == data.ok);
     }
 }

@@ -34,5 +34,15 @@ class ServiceUser {
             return data;
         });
     }
+    setPassword(login, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let data = { n: 0, ok: 0 };
+            let fn = () => __awaiter(this, void 0, void 0, function* () {
+                data = yield user_1.default.updateOne({ username: login }, { password: password });
+            });
+            yield fn();
+            return (data.n == data.ok);
+        });
+    }
 }
 exports.default = ServiceUser;
