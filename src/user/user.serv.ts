@@ -1,9 +1,9 @@
-import User, { IIUser } from "./../user/user";
+import User, { IUser, UserCheck } from "./../user/user";
 import moment from "moment";
 
 export default class ServiceUser {
-    public async find(where: {}): Promise<IIUser[]> {
-        let data: IIUser[] = [];
+    public async find(where: {}): Promise<IUser[]> {
+        let data: IUser[] = [];
         let fn = async () => {
             data = await User.find(where).select("-password -phone -_id");
         };
@@ -11,8 +11,8 @@ export default class ServiceUser {
         return data;
     }
 
-    public async login(login: string, password: string): Promise<IIUser[]> {
-        let data:IIUser[] = [];
+    public async login(login: string, password: string): Promise<IUser[]> {
+        let data:IUser[] = [];
         let fn = async () => {
             data = await User.find({ username: login, password: password }).select("-password -phone -_id");
         };
@@ -27,5 +27,14 @@ export default class ServiceUser {
         };
         await fn();
         return (data.n == data.ok);
+    }
+
+    public async register(user: IUser): Promise<{ result: boolean, messages: any }> {
+        user.isCheck = false;
+        user.allowGdpr = false;
+        
+        let answer: { result: boolean, messages: any } = await UserCheck(user);
+        if (answer.result) await User.create(user);
+        return answer;
     }
 }

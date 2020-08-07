@@ -6,7 +6,7 @@ import Query from "./../src/item/item.serv";
 describe('Simple test must return items', () => {
 
     it('should return data', async () => {
-        let query = new Query();
+        let query:Query = new Query();
         const data = await query.find({});
         expect(data.length).greaterThan(0);
     });

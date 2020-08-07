@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const user_1 = __importDefault(require("./user/user"));
 const user_serv_1 = __importDefault(require("./user/user.serv"));
 const server_base_1 = __importDefault(require("./server.base"));
 /**
@@ -30,6 +31,14 @@ class ServerUser extends server_base_1.default {
         app.get('/', (request, response) => __awaiter(this, void 0, void 0, function* () {
             let data = yield query.find({});
             response.send(data);
+        }));
+        app.get('/register', (request, response) => __awaiter(this, void 0, void 0, function* () {
+            let user = new user_1.default();
+            let answer = yield query.register(user);
+            if (answer.result)
+                response.send();
+            else
+                response.status(500).send(answer);
         }));
         // Server is listening to port defined when Server was initiated
         app.listen(this.port, () => {

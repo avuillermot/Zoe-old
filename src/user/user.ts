@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
-import moment from 'moment';
+import mongoose from "mongoose";
+import moment from "moment";
+import { Validator, extend } from "node-input-validator";
 
 const UserSchema = new mongoose.Schema({
 	lastName: String,
@@ -16,7 +17,24 @@ const UserSchema = new mongoose.Schema({
 	group: { type: String, default: 'user' }
 });
 
-export interface IIUser extends mongoose.Document {
+const UserValidator = {
+	email: 'required|email',
+	lastName: 'required',
+	firstName: 'required',
+	username: 'required|minLength:3',
+	password: 'required|minLength:5',
+	phone: 'required',
+	group: 'required',
+	isCheck: 'required'
+};
+
+export async function UserCheck(user: IUser): Promise<{ result: boolean, messages: any }> {
+	const validator: Validator = new Validator(user, UserValidator);
+	let result: boolean = await validator.check();
+	return { result: result, messages: validator.errors };
+}
+
+export interface IUser extends mongoose.Document {
 	lastName: String,
 	firstName: String,
 	email: String,
@@ -31,4 +49,4 @@ export interface IIUser extends mongoose.Document {
 	group: String
 };
 
-export default mongoose.model<IIUser>('Users', UserSchema);
+export default mongoose.model<IUser>('Users', UserSchema);

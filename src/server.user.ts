@@ -1,4 +1,5 @@
 import express from "express";
+import User, { IUser } from "./user/user";
 import Query from "./user/user.serv";
 import ServerBase from "./server.base";
 
@@ -19,6 +20,13 @@ export default class ServerUser extends ServerBase {
         app.get('/', async (request: express.Request, response: express.Response) => {
             let data = await query.find({});
             response.send(data);
+        });
+
+        app.get('/register', async (request: express.Request, response: express.Response) => {
+            let user: IUser = new User();
+            let answer = await query.register(user);
+            if (answer.result) response.send();
+            else response.status(500).send(answer);
         });
 
         // Server is listening to port defined when Server was initiated
