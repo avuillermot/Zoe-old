@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import moment from "moment";
 import { Validator, extend } from "node-input-validator";
+import Log from "./log";
 
 const UserSchema = new mongoose.Schema({
 	lastName: String,
@@ -15,7 +16,8 @@ const UserSchema = new mongoose.Schema({
 	created: { type: Date, default: moment().utc() },
 	updated: { type: Date, default: moment().utc() },
 	lastConnect: Date,
-	group: { type: String, default: 'user' }
+	group: { type: String, default: 'user' }/*,
+	logs: [Log]*/
 });
 
 const UserValidator = {
