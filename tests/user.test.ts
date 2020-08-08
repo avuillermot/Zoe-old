@@ -34,10 +34,10 @@ describe('Must update password', () => {
 
 describe('Must have a error when create user', () => {
 
-    it('should not create test@hotmail.com account (already exists)', async () => {
+    it('should not create username test@hotmail.com (username already exists)', async () => {
         let user: IUser = new User();
         user.isCheck = false;
-        user.email = "test@hotmail.com";
+        user.email = "test-not-exist@hotmail.com";
         user.username = "test@hotmail.com";
         user.firstName = "John";
         user.lastName = "Doe";
@@ -47,8 +47,23 @@ describe('Must have a error when create user', () => {
         const data = await query.tryToRegister(user);
 
         expect(data.result).equal(false);
-        expect(data.messages[0]).equal("User already exists");
-        //if (data.result == false) console.log(data.messages);
+        if (data.result == false) console.log(data.messages);
+    });
+
+    it('should not create email test@hotmail.com (email already exists)', async () => {
+        let user: IUser = new User();
+        user.isCheck = false;
+        user.email = "test@hotmail.com";
+        user.username = "test-not-exist@hotmail.com";
+        user.firstName = "John";
+        user.lastName = "Doe";
+        user.password = "12345";
+        user.phone = "0380520356";
+        let query: Query = new Query();
+        const data = await query.tryToRegister(user);
+
+        expect(data.result).equal(false);
+        if (data.result == false) console.log(data.messages);
     });
 
     it('should not create testhotmail.com account (bad mail)', async () => {

@@ -1,5 +1,6 @@
 import User, { IUser, UserCheck } from "./../user/user";
 import moment from "moment";
+import { json } from "express";
 
 export default class ServiceUser {
     public async find(where: {}): Promise<IUser[]> {
@@ -35,7 +36,7 @@ export default class ServiceUser {
         }
         catch (ex) {
             return {
-                result: false, messages: ["User already exists"]
+                result: false, messages: ["User already exists :" + JSON.stringify(ex.keyValue)]
             };
         }
     }
