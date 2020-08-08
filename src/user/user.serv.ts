@@ -6,7 +6,7 @@ export default class ServiceUser {
     public async find(where: {}): Promise<IUser[]> {
         let data: IUser[] = [];
         let fn = async () => {
-            data = await User.find(where).select("-password -phone -_id");
+            data = await User.find(where).select("-password -phone");
         };
         await fn();
         return data;
@@ -15,7 +15,7 @@ export default class ServiceUser {
     public async login(login: string, password: string): Promise<IUser[]> {
         let data:IUser[] = [];
         let fn = async () => {
-            data = await User.find({ username: login, password: password }).select("-password -phone -_id");
+            data = await User.find({ username: login, password: password }).select("-password -phone");
         };
         await fn();
         return data;
@@ -48,5 +48,23 @@ export default class ServiceUser {
         let answer: { result: boolean, messages: any } = await UserCheck(user);
         if (answer.result) await User.create(user);
         return answer;
+    }
+
+    public async checkEmail(email: string): Promise<boolean> {
+        let data = { n: 0, ok: 0 };
+        let fn = async () => {
+            data = await User.updateOne({ email: email }, { isCheck: true });
+        };
+        await fn();
+        return (data.n == data.ok);
+    }
+
+    public async update(user: IUser): Promise<boolean> {
+        let data = { n: 0, ok: 0 };
+        let fn = async () => {
+            data = await User.updateOne({ email: user.email }, user);
+        };
+        await fn();
+        return (data.n == data.ok);
     }
 }

@@ -128,3 +128,31 @@ describe('Must have a error when create user', () => {
         //if (data.result == false) console.log(data.messages);
     });
 });
+
+describe('Must set email to checked password', () => {
+
+    it('should update test@hotmail.com isCheck property', async () => {
+        let query: Query = new Query();
+        const data = await query.checkEmail("test@hotmail.com");
+        expect(data).equal(true);
+    });
+});
+
+describe('Must update user', () => {
+
+    it('should update test@hotmail.com', async () => {
+        let user: IUser = new User();
+        user._id = "5f2e6e3f23333756b4f4a3d1";
+        user.isCheck = false;
+        user.email = "test@hotmail.com";
+        user.username = "test@hotmail.com";
+        user.firstName = "John";
+        user.lastName = "Doe";
+        user.password = "12345";
+        user.phone = "0380520356";
+
+        let query: Query = new Query();
+        const data = await query.update(user);
+        expect(data).equal(true);
+    });
+});

@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
 	password: String,
 	phone: String,
 	allowGdpr: { type: Boolean, default: false },
+	// email have been checked
 	isCheck: Boolean,
 	created: { type: Date, default: moment().utc() },
 	updated: { type: Date, default: moment().utc() },
