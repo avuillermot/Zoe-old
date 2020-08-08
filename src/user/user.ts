@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
 	username: String,
 	password: String,
 	phone: String,
-	allowGdpr: Boolean,
+	allowGdpr: { type: Boolean, default: false },
 	isCheck: Boolean,
 	created: { type: Date, default: moment().utc() },
 	updated: { type: Date, default: moment().utc() },

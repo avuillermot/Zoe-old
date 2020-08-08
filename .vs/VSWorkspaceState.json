@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\src",
+    "\\src\\user",
+    "\\tests"
   ],
-  "SelectedNode": "\\src\\model.js",
+  "SelectedNode": "\\src\\server.user.ts",
   "PreviewInSolutionExplorer": false
 }

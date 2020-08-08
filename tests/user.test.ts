@@ -36,9 +36,16 @@ describe('Must create user', () => {
 
     it('should create test@hotmail.com account', async () => {
         let user: IUser = new User();
-        user.isCheck = true;
+        user.isCheck = false;
+        user.email = "test@hotmail.com";
+        user.username = "test@hotmail.com";
+        user.firstName = "John";
+        user.lastName = "Doe";
+        user.password = "12345";
+        user.phone = "0380520356";
         let query:Query = new Query();
-        const data = await query.register(user);
+        const data = await query.tryToRegister(user);
+        if (data.result == false) console.log(data.messages);
         expect(data.result).equal(true);
     });
 });

@@ -29,6 +29,17 @@ export default class ServiceUser {
         return (data.n == data.ok);
     }
 
+    public async tryToRegister(user: IUser): Promise<{ result: boolean, messages: any }> {
+        try {
+            return await this.register(user);
+        }
+        catch (ex) {
+            return {
+                result: false, messages: []
+            };
+        }
+    }
+
     public async register(user: IUser): Promise<{ result: boolean, messages: any }> {
         user.isCheck = false;
         user.allowGdpr = false;
