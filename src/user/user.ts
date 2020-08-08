@@ -36,6 +36,7 @@ export async function UserCheck(user: IUser): Promise<{ result: boolean, message
 }
 
 export interface IUser extends mongoose.Document {
+	_id: String,
 	lastName: String,
 	firstName: String,
 	email: String,
