@@ -1,6 +1,4 @@
-import User, { IUser, UserCheck } from "./../user/user";
-import moment from "moment";
-import { json } from "express";
+import User, { IUser, UserCheck } from "./user";
 
 export default class ServiceUser {
     public async find(where: {}): Promise<IUser[]> {

@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import "mocha";
 import Query from "./../src/user/user.serv";
 import User, { IUser } from "./../src/user/user";
+import Users from "./../src/user/users";
 
 describe('Must authenticate user', () => {
 
@@ -47,7 +48,7 @@ describe('Must have a error when create user', () => {
         const data = await query.tryToRegister(user);
 
         expect(data.result).equal(false);
-        if (data.result == false) console.log(data.messages);
+        //if (data.result == false) console.log(data.messages);
     });
 
     it('should not create email test@hotmail.com (email already exists)', async () => {
@@ -63,7 +64,7 @@ describe('Must have a error when create user', () => {
         const data = await query.tryToRegister(user);
 
         expect(data.result).equal(false);
-        if (data.result == false) console.log(data.messages);
+        //if (data.result == false) console.log(data.messages);
     });
 
     it('should not create testhotmail.com account (bad mail)', async () => {
@@ -154,5 +155,13 @@ describe('Must update user', () => {
         let query: Query = new Query();
         const data = await query.update(user);
         expect(data).equal(true);
+    });
+});
+
+describe('Users collection', () => {
+    it('should load one user', async () => {
+        let users: Users = new Users();
+        await users.load({ email: "test@hotmail.com" });
+        expect(users.count()).equal(1);
     });
 });

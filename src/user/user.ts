@@ -51,4 +51,5 @@ export interface IUser extends mongoose.Document {
 	group: String
 };
 
+
 export default mongoose.model<IUser>('Users', UserSchema);
