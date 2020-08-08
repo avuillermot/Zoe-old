@@ -35,7 +35,7 @@ export default class ServiceUser {
         }
         catch (ex) {
             return {
-                result: false, messages: []
+                result: false, messages: ["User already exists"]
             };
         }
     }

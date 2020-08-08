@@ -32,9 +32,9 @@ describe('Must update password', () => {
     });
 });
 
-describe('Must create user', () => {
+describe('Must have a error when create user', () => {
 
-    it('should create test@hotmail.com account', async () => {
+    it('should not create test@hotmail.com account (already exists)', async () => {
         let user: IUser = new User();
         user.isCheck = false;
         user.email = "test@hotmail.com";
@@ -45,7 +45,71 @@ describe('Must create user', () => {
         user.phone = "0380520356";
         let query:Query = new Query();
         const data = await query.tryToRegister(user);
-        if (data.result == false) console.log(data.messages);
-        expect(data.result).equal(true);
+
+        expect(data.result).equal(false);
+        expect(data.messages[0]).equal("User already exists");
+        //if (data.result == false) console.log(data.messages);
+    });
+
+    it('should not create testhotmail.com account (bad mail)', async () => {
+        let user: IUser = new User();
+        user.isCheck = false;
+        user.email = "testhotmail.com";
+        user.username = "testhotmail.com";
+        user.firstName = "John";
+        user.lastName = "Doe";
+        user.password = "12345";
+        user.phone = "0380520356";
+        let query: Query = new Query();
+
+        const data = await query.tryToRegister(user);
+        expect(data.result).equal(false);
+        //if (data.result == false) console.log(data.messages);
+    });
+
+    it('should not create test@hotmail.com account (bad first name)', async () => {
+        let user: IUser = new User();
+        user.isCheck = false;
+        user.email = "test@hotmail.com";
+        user.username = "test@hotmail.com";
+        user.lastName = "Doe";
+        user.password = "12345";
+        user.phone = "0380520356";
+        let query: Query = new Query();
+
+        const data = await query.tryToRegister(user);
+        expect(data.result).equal(false);
+        //if (data.result == false) console.log(data.messages);
+    });
+
+    it('should not create test@hotmail.com account (bad last mail)', async () => {
+        let user: IUser = new User();
+        user.isCheck = false;
+        user.email = "test@hotmail.com";
+        user.username = "test@hotmail.com";
+        user.firstName = "John";
+        user.password = "12345";
+        user.phone = "0380520356";
+        let query: Query = new Query();
+
+        const data = await query.tryToRegister(user);
+        expect(data.result).equal(false);
+        //if (data.result == false) console.log(data.messages);
+    });
+
+    it('should not create test@hotmail.com account (password to short)', async () => {
+        let user: IUser = new User();
+        user.isCheck = false;
+        user.email = "test@hotmail.com";
+        user.username = "test@hotmail.com";
+        user.firstName = "John";
+        user.lastName = "Doe";
+        user.password = "1234";
+        user.phone = "0380520356";
+        let query: Query = new Query();
+
+        const data = await query.tryToRegister(user);
+        expect(data.result).equal(false);
+        //if (data.result == false) console.log(data.messages);
     });
 });
