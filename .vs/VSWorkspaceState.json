@@ -1,10 +1,12 @@
 {
   "ExpandedNodes": [
     "",
+    "\\script",
     "\\src",
+    "\\src\\pdf",
     "\\src\\user",
     "\\tests"
   ],
-  "SelectedNode": "\\src\\user\\user.serv.ts",
+  "SelectedNode": "\\src\\pdf\\pdf.serv.ts",
   "PreviewInSolutionExplorer": false
 }
