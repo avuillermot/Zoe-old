@@ -2,7 +2,8 @@ import "./../src/config"
 import { expect } from 'chai';
 import "mocha";
 import Pdf from "./../src/document/pdf/pdf.serv";
-import Invoice from "./../src/document/invoice/standard";
+import ServiceInvoice from "./../src/document/invoice/default.serv";
+import Invoice from "./../src/document/invoice/invoice";
 
 describe('Simple test must signed PDF', () => {
 
@@ -13,7 +14,18 @@ describe('Simple test must signed PDF', () => {
     });
 
     it('should create a invoice', async () => {
-        let query: Invoice = new Invoice();
-        const document = await query.create();
+        let query: ServiceInvoice = new ServiceInvoice();
+        let invoice: Invoice = new Invoice();
+
+        invoice.providerName = "AVU Corp.";
+        invoice.providerZipCode = "69380";
+        invoice.providerAddress1 = "8 allée des noisetiers";
+        invoice.providerAddress2 = "bib";
+        invoice.providerCity = "Lissieu";
+        invoice.providerCountry = "FRANCE";
+
+        invoice.invoiceNumber = "INV01";
+
+        const document = await query.create(invoice);
     });
 });
