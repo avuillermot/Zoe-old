@@ -30,35 +30,28 @@ export default class DefaultInvoice {
         }*/
 
         this.generateFooter(invoice);
+        this.document.moveDown();
         this.document.end();
     }
 
-    /*public async generateCustomerInformation(invoice):void {
-        const shipping = invoice.shipping;
-
-        document
-            .text(`Invoice Number: ${invoice.invoice_nr}`, 50, 200)
-            .text(`Invoice Date: ${new Date()}`, 50, 215)
-            .text(`Balance Due: ${invoice.subtotal - invoice.paid}`, 50, 130)
-
-            .text(shipping.name, 300, 200)
-            .text(shipping.address, 300, 215)
-            .text(`${shipping.city}, ${shipping.state}, ${shipping.country}`, 300, 130)
-            .moveDown();
-    }*/
-
     public async generateHeader(invoice: Invoice): Promise<void> {
-        let x: number = 70;
+
+        this.generateHeaderProviderPart(invoice);
+        this.generateInvoiceAddressPart(invoice);
+        this.generateHeaderInvoiceReference(invoice);
+    }
+
+    public async generateHeaderProviderPart(invoice: Invoice): Promise<void> {
+        let x: number = 50;
         let y: number = 50;
         let interval: number = 11;
 
         // provider part
         this.document
             //.image("logo.png", 50, 45, { width: 50 })
-            .fillColor("#444444")
-            .fontSize(12)
-            .text(invoice.providerName, 70, y)
-            .fontSize(10);
+            //.fillColor("#444444")
+            .fontSize(10)
+            .text(invoice.providerName, x, y)
         y = y + interval;
 
         this.document.text(invoice.providerAddress1, x, y);
@@ -78,11 +71,49 @@ export default class DefaultInvoice {
             this.document.text(invoice.providerCountry, x, y);
             y = y + interval;
         }
+    }
 
-        // invoice details part
-        x = 300;
-        y = 100;
-        this.document.text(invoice.invoiceNumber, x, y);
+    public async generateInvoiceAddressPart(invoice: Invoice): Promise<void> {
+        let x: number = 200;
+        let y: number = 100;
+        let interval: number = 11;
+
+        this.document.fontSize(10).text(invoice.invoiceLabel, x, y);
+        y = y + interval;
+
+        this.document
+            //.image("logo.png", 50, 45, { width: 50 })
+            .fillColor("#444444")
+            .fontSize(10)
+            .text(invoice.customerName, x, y)
+        y = y + interval;
+
+        this.document.text(invoice.invoiceAddress1, x, y);
+        y = y + interval;
+
+        if (invoice.invoiceAddress2 != "") {
+            this.document.text(invoice.invoiceAddress2, x, y);
+            y = y + interval;
+        }
+        if (invoice.invoiceAddress3 != "") {
+            this.document.text(invoice.invoiceAddress3, x, y);
+            y = y + interval;
+        }
+        this.document.text(invoice.invoiceZipCode + ", " + invoice.invoiceCity, x, y);
+        y = y + interval;
+        if (invoice.invoiceCountry != "") {
+            this.document.text(invoice.invoiceCountry, x, y);
+            y = y + interval;
+        }
+    }
+
+    public async generateHeaderInvoiceReference(invoice:Invoice):Promise<void> {
+
+        let x: number = 400;
+        let y: number = 100;
+        let interval: number = 11;
+
+        this.document.fontSize(10).text(invoice.invoiceNumber, x, y);
         y = y + interval;
         this.document.text(invoice.invoiceDate, x, y);
         y = y + interval;
@@ -90,7 +121,6 @@ export default class DefaultInvoice {
             this.document.text(invoice.deliveryDate, x, y);
             y = y + interval;
         }
-        this.document.moveDown();
     }
 
     public async generateFooter(invoice:Invoice):Promise<void> {

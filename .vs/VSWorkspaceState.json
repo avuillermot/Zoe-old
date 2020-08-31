@@ -3,10 +3,14 @@
     "",
     "\\script",
     "\\src",
-    "\\src\\pdf",
+    "\\src\\config",
+    "\\src\\document",
+    "\\src\\document\\invoice",
+    "\\src\\document\\pdf",
+    "\\src\\item",
     "\\src\\user",
     "\\tests"
   ],
-  "SelectedNode": "\\src\\pdf\\pdf.serv.ts",
+  "SelectedNode": "\\src\\document\\invoice\\default.serv.ts",
   "PreviewInSolutionExplorer": false
 }

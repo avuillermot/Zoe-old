@@ -11,6 +11,14 @@ export default class DefaultInvoice {
     customerCity: string = "";
     customerCountry: string = "";
 
+    invoiceLabel: string = "Facturé à :";
+    invoiceAddress1: string = "";
+    invoiceAddress2: string = "";
+    invoiceAddress3: string = "";
+    invoiceZipCode: string = "";
+    invoiceCity: string = "";
+    invoiceCountry: string = "";
+
     providerId1: string = "";
     providerId2: string = "";
     providerId3: string = "";

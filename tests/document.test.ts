@@ -7,11 +7,11 @@ import Invoice from "./../src/document/invoice/invoice";
 
 describe('Simple test must signed PDF', () => {
 
-    it('should return PDF as array byte', async () => {
+    /*it('should return PDF as array byte', async () => {
         let query:Pdf = new Pdf();
         const document = await query.sign([]);
         expect(document.data.data.length).greaterThan(0);
-    });
+    });*/
 
     it('should create a invoice', async () => {
         let query: ServiceInvoice = new ServiceInvoice();
@@ -23,6 +23,13 @@ describe('Simple test must signed PDF', () => {
         invoice.providerAddress2 = "bib";
         invoice.providerCity = "Lissieu";
         invoice.providerCountry = "FRANCE";
+
+        invoice.customerName = "Kuehne+Nagel";
+
+        invoice.invoiceZipCode = "21160";
+        invoice.invoiceAddress1 = "7 impasse Henri Lapostolet";
+        invoice.invoiceCity = "Perrigny-les-Dijon";
+        invoice.invoiceCountry = "FRANCE";
 
         invoice.invoiceNumber = "INV01";
 
