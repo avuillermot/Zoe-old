@@ -4,7 +4,9 @@ import Invoice from '../invoice/invoice';
 
 export default class DefaultInvoice {
     
-    document:any;
+    document: any;
+    margeX: number = 50;
+    width: number = 610;
 
     public constructor() {
         this.document = new PDFDocument();
@@ -29,20 +31,22 @@ export default class DefaultInvoice {
                 .text("c5", 0, y, { align: "right" });
         }*/
 
+
+        this.document.moveTo(this.margeX, 200).lineTo(this.width - this.margeX, 200).fill('#000000');
+
         this.generateFooter(invoice);
         this.document.moveDown();
         this.document.end();
     }
 
     public async generateHeader(invoice: Invoice): Promise<void> {
-
         this.generateHeaderProviderPart(invoice);
         this.generateInvoiceAddressPart(invoice);
         this.generateHeaderInvoiceReference(invoice);
     }
 
     public async generateHeaderProviderPart(invoice: Invoice): Promise<void> {
-        let x: number = 50;
+        let x: number = this.margeX;
         let y: number = 50;
         let interval: number = 11;
 
@@ -74,11 +78,11 @@ export default class DefaultInvoice {
     }
 
     public async generateInvoiceAddressPart(invoice: Invoice): Promise<void> {
-        let x: number = 200;
+        let x: number = this.margeX + 150;
         let y: number = 100;
         let interval: number = 11;
 
-        this.document.fontSize(10).text(invoice.invoiceLabel, x, y);
+        this.document.fontSize(10).text(invoice.invoiceLabel, x, y, {underline: true});
         y = y + interval;
 
         this.document
@@ -109,7 +113,7 @@ export default class DefaultInvoice {
 
     public async generateHeaderInvoiceReference(invoice:Invoice):Promise<void> {
 
-        let x: number = 400;
+        let x: number = this.margeX + 350;
         let y: number = 100;
         let interval: number = 11;
 

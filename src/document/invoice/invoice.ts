@@ -11,7 +11,7 @@ export default class DefaultInvoice {
     customerCity: string = "";
     customerCountry: string = "";
 
-    invoiceLabel: string = "Facturé à :";
+    invoiceLabel: string = "Facture a :";
     invoiceAddress1: string = "";
     invoiceAddress2: string = "";
     invoiceAddress3: string = "";

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register tests/**/*.test.ts",
+    "test": "mocha --exit -r ts-node/register tests/**/*.test.ts",
+    "testone": "mocha --exit -r ts-node/register tests/**/document.test.ts",
     "dev": "concurrently -k -n \"Typescript,NodeJS\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon dist/index.js\""
   },
   "keywords": [],
