@@ -1,12 +1,14 @@
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
-import Invoice from '../invoice/invoice';
+import Invoice from '../invoice/invoice.document';
 
 export default class DefaultInvoice {
     
     document: any;
     margeX: number = 50;
     width: number = 610;
+    defaultFont: string = "Helvetica";
+    defaultFontBold: string = "Helvetica-Bold";
 
     public constructor() {
         this.document = new PDFDocument();
@@ -42,6 +44,7 @@ export default class DefaultInvoice {
     public async generateHeader(invoice: Invoice): Promise<void> {
         this.generateHeaderProviderPart(invoice);
         this.generateInvoiceAddressPart(invoice);
+        this.generateCustomerAddressPart(invoice);
         this.generateHeaderInvoiceReference(invoice);
     }
 
@@ -52,9 +55,7 @@ export default class DefaultInvoice {
 
         // provider part
         this.document
-            //.image("logo.png", 50, 45, { width: 50 })
-            //.fillColor("#444444")
-            .fontSize(10)
+            .fontSize(8)
             .text(invoice.providerName, x, y)
         y = y + interval;
 
@@ -75,21 +76,29 @@ export default class DefaultInvoice {
             this.document.text(invoice.providerCountry, x, y);
             y = y + interval;
         }
+
+        y = y + interval;
+
+        if (invoice.providerEmail != "") {
+            this.document.text(invoice.providerEmail, x, y);
+            y = y + interval;
+        }
+
+        if (invoice.providerPhone != "") {
+            this.document.text(invoice.providerPhone, x, y);
+            y = y + interval;
+        }
     }
 
     public async generateInvoiceAddressPart(invoice: Invoice): Promise<void> {
-        let x: number = this.margeX + 150;
+        let x: number = this.margeX + 220;
         let y: number = 100;
         let interval: number = 11;
 
-        this.document.fontSize(10).text(invoice.invoiceLabel, x, y, {underline: true});
+        this.document.fontSize(8).text(invoice.invoiceLabel, x, y, {underline: true});
         y = y + interval;
 
-        this.document
-            //.image("logo.png", 50, 45, { width: 50 })
-            .fillColor("#444444")
-            .fontSize(10)
-            .text(invoice.customerName, x, y)
+        this.document.text(invoice.customerName, x, y)
         y = y + interval;
 
         this.document.text(invoice.invoiceAddress1, x, y);
@@ -111,13 +120,43 @@ export default class DefaultInvoice {
         }
     }
 
-    public async generateHeaderInvoiceReference(invoice:Invoice):Promise<void> {
-
+    public async generateCustomerAddressPart(invoice: Invoice): Promise<void> {
         let x: number = this.margeX + 350;
         let y: number = 100;
         let interval: number = 11;
 
-        this.document.fontSize(10).text(invoice.invoiceNumber, x, y);
+        this.document.fontSize(8).text(invoice.customerLabel, x, y, { underline: true });
+        y = y + interval;
+
+        this.document.text(invoice.customerName, x, y)
+        y = y + interval;
+
+        this.document.text(invoice.customerAddress1, x, y);
+        y = y + interval;
+
+        if (invoice.customerAddress2 != "") {
+            this.document.text(invoice.customerAddress2, x, y);
+            y = y + interval;
+        }
+        if (invoice.customerAddress3 != "") {
+            this.document.text(invoice.customerAddress3, x, y);
+            y = y + interval;
+        }
+        this.document.text(invoice.customerZipCode + ", " + invoice.customerCity, x, y);
+        y = y + interval;
+        if (invoice.customerCountry != "") {
+            this.document.text(invoice.customerCountry, x, y);
+            y = y + interval;
+        }
+    }
+
+    public async generateHeaderInvoiceReference(invoice:Invoice):Promise<void> {
+
+        let x: number = this.margeX + 350;
+        let y: number = 50;
+        let interval: number = 11;
+
+        this.document.fontSize(8).font(this.defaultFontBold).text(invoice.invoiceNumber, x, y).font(this.defaultFont);
         y = y + interval;
         this.document.text(invoice.invoiceDate, x, y);
         y = y + interval;

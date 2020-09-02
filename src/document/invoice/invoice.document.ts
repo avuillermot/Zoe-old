@@ -1,8 +1,9 @@
-export default class DefaultInvoice {
-    invoiceDate: Date|null = null;
+export default class DefaultInvoiceDocument {
+    invoiceDate: string = "";
     invoiceNumber: string = "";
-    deliveryDate: Date|null = null;
+    deliveryDate: string = "";
 
+    customerLabel: string = "Client :"
     customerName: string = "";
     customerAddress1: string = "";
     customerAddress2: string = "";
@@ -11,7 +12,7 @@ export default class DefaultInvoice {
     customerCity: string = "";
     customerCountry: string = "";
 
-    invoiceLabel: string = "Facture a :";
+    invoiceLabel: string = "Adresse facturaton :";
     invoiceAddress1: string = "";
     invoiceAddress2: string = "";
     invoiceAddress3: string = "";
@@ -30,4 +31,6 @@ export default class DefaultInvoice {
     providerZipCode: string = "";
     providerCity: string = "";
     providerCountry: string = "";
+    providerEmail: string = "";
+    providerPhone: string = "";
 }
