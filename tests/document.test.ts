@@ -2,7 +2,7 @@ import "./../src/config"
 import { expect } from 'chai';
 import "mocha";
 import Pdf from "./../src/document/pdf/pdf.serv";
-import ServiceInvoice from "./../src/document/invoice/default.serv";
+import ServiceInvoice from "./../src/document/invoice/invoice.document.serv";
 import Invoice from "./../src/document/invoice/invoice.document";
 import moment from "moment";
 
@@ -45,8 +45,11 @@ describe('Simple test must signed PDF', () => {
         invoice.customerCountry = "FRANCE";
 
         invoice.invoiceNumber = "Facture numero : INV01";
-        invoice.invoiceDate = "Emise le  : " + moment().utc().format("L");
+        invoice.invoiceDate = "Emis le  : " + moment().utc().format("L");
         invoice.deliveryDate = "Date de la vente : " + moment().utc().format("L");
+
+        invoice.items.push({ description: "elagage laurier", price: 25.2, comment: "évacuation dechets" });
+        invoice.items.push({ description: "elagage herable", price: 125.2, comment: "évacuation dechets non" });
 
         const document = await query.create(invoice);
     });

@@ -1,51 +1,16 @@
 import PDFDocument from 'pdfkit';
-import fs from 'fs';
 import Invoice from '../invoice/invoice.document';
 
-export default class DefaultInvoice {
-    
+export default class InvoiceHeaderDefault {
+
     document: any;
-    margeX: number = 50;
-    width: number = 610;
-    defaultFont: string = "Helvetica";
-    defaultFontBold: string = "Helvetica-Bold";
+    public margeX: number = 0;
+    public width: number = 0;
+    public defaultFont: string = "";
+    public defaultFontBold: string = "";
 
-    public constructor() {
-        this.document = new PDFDocument();
-    }
-
-    public async create(invoice:Invoice):Promise<void> {
-       
-        this.document.pipe(fs.createWriteStream('output.pdf'));
-        this.generateHeader(invoice);
-        /*doc
-            .fontSize(25)
-            .text('Some text with an embedded font!', 100, 100);*/
-
-        /*let y = 10;
-        for (let i = 0; i < 10; i++) {
-            doc
-                .fontSize(10)
-                .text("c1", 50, y)
-                .text("c2", 150, y)
-                .text("c3", 280, y, { width: 90, align: "right" })
-                .text("c4", 370, y, { width: 90, align: "right" })
-                .text("c5", 0, y, { align: "right" });
-        }*/
-
-
-        this.document.moveTo(this.margeX, 200).lineTo(this.width - this.margeX, 200).fill('#000000');
-
-        this.generateFooter(invoice);
-        this.document.moveDown();
-        this.document.end();
-    }
-
-    public async generateHeader(invoice: Invoice): Promise<void> {
-        this.generateHeaderProviderPart(invoice);
-        this.generateInvoiceAddressPart(invoice);
-        this.generateCustomerAddressPart(invoice);
-        this.generateHeaderInvoiceReference(invoice);
+    public constructor(document:any) {
+        this.document = document;
     }
 
     public async generateHeaderProviderPart(invoice: Invoice): Promise<void> {
@@ -91,11 +56,11 @@ export default class DefaultInvoice {
     }
 
     public async generateInvoiceAddressPart(invoice: Invoice): Promise<void> {
-        let x: number = this.margeX + 220;
+        let x: number = this.margeX + 250;
         let y: number = 100;
         let interval: number = 11;
 
-        this.document.fontSize(8).text(invoice.invoiceLabel, x, y, {underline: true});
+        this.document.fontSize(8).text(invoice.invoiceLabel, x, y, { underline: true });
         y = y + interval;
 
         this.document.text(invoice.customerName, x, y)
@@ -121,7 +86,7 @@ export default class DefaultInvoice {
     }
 
     public async generateCustomerAddressPart(invoice: Invoice): Promise<void> {
-        let x: number = this.margeX + 350;
+        let x: number = this.margeX + 380;
         let y: number = 100;
         let interval: number = 11;
 
@@ -150,9 +115,9 @@ export default class DefaultInvoice {
         }
     }
 
-    public async generateHeaderInvoiceReference(invoice:Invoice):Promise<void> {
+    public async generateHeaderInvoiceReference(invoice: Invoice): Promise<void> {
 
-        let x: number = this.margeX + 350;
+        let x: number = this.margeX + 380;
         let y: number = 50;
         let interval: number = 11;
 
@@ -166,14 +131,4 @@ export default class DefaultInvoice {
         }
     }
 
-    public async generateFooter(invoice:Invoice):Promise<void> {
-        this.document
-            .fontSize(10)
-            .text(
-                "Payment is due within 15 days. Thank you for your business.",
-                50,
-                700,
-                { align: "center", width: 500 }
-            );
-    }
 }

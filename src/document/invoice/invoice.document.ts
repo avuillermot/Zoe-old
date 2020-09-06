@@ -33,4 +33,12 @@ export default class DefaultInvoiceDocument {
     providerCountry: string = "";
     providerEmail: string = "";
     providerPhone: string = "";
+
+    items: DefaultInvoiceItem[]= [];
+}
+
+export class DefaultInvoiceItem {
+    description: string = "";
+    price: number = 0;
+    comment: string = "";
 }
