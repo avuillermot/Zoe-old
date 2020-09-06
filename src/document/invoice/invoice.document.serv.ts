@@ -3,6 +3,7 @@ import fs from 'fs';
 import Invoice from '../invoice/invoice.document';
 import ServInvoiceHeader from '../invoice/invoice.document.header.serv';
 import ServInvoiceBody from '../invoice/invoice.document.body.serv';
+import ServInvoiceFooter from '../invoice/invoice.document.footer';
 
 export default class DefaultInvoice {
     
@@ -13,6 +14,7 @@ export default class DefaultInvoice {
     defaultFontBold: string = "Helvetica-Bold";
     servDocumentHeader: ServInvoiceHeader;
     servDocumentBody: ServInvoiceBody;
+    servDocumentFooter: ServInvoiceFooter;
 
     public constructor() {
         this.document = new PDFDocument();
@@ -28,6 +30,12 @@ export default class DefaultInvoice {
         this.servDocumentBody.width = this.width;
         this.servDocumentBody.defaultFont = this.defaultFont;
         this.servDocumentBody.defaultFontBold = this.defaultFontBold;
+
+        this.servDocumentFooter = new ServInvoiceFooter(this.document);
+        this.servDocumentFooter.margeX = this.margeX;
+        this.servDocumentFooter.width = this.width;
+        this.servDocumentFooter.defaultFont = this.defaultFont;
+        this.servDocumentFooter.defaultFontBold = this.defaultFontBold;
     }
 
     public async create(invoice:Invoice):Promise<void> {
@@ -41,6 +49,8 @@ export default class DefaultInvoice {
         this.servDocumentBody.generateDetails(invoice);
 
         this.document.moveTo(this.margeX, 230).lineTo(this.width - this.margeX, 230).fill('#000000');
+
+        this.servDocumentFooter.generateFooter(invoice);
 
         this.generateFooter(invoice);
         this.document.moveDown();

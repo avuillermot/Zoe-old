@@ -48,8 +48,8 @@ describe('Simple test must signed PDF', () => {
         invoice.invoiceDate = "Emis le  : " + moment().utc().format("L");
         invoice.deliveryDate = "Date de la vente : " + moment().utc().format("L");
 
-        invoice.items.push({ description: "elagage laurier", price: 25.2, comment: "évacuation dechets" });
-        invoice.items.push({ description: "elagage herable", price: 125.2, comment: "évacuation dechets non" });
+        invoice.items.push({ description: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 25.2, comment: "évacuation dechets" });
+        invoice.items.push({ description: "elagage herablexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 125.2, comment: "évacuation dechets non" });
 
         const document = await query.create(invoice);
     });

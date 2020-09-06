@@ -2,11 +2,12 @@ import PDFDocument from 'pdfkit';
 import Invoice from '../invoice/invoice.document';
 import item from '../../item/item';
 
-export default class InvoiceBodyDefault {
+export default class InvoiceFooterDefault {
 
     document: any;
     public margeX: number = 0;
     public width: number = 0;
+    public height: number = 600;
     public defaultFont: string = "";
     public defaultFontBold: string = "";
 
@@ -14,11 +15,7 @@ export default class InvoiceBodyDefault {
         this.document = document;
     }
 
-    public async generateTitle(invoice: Invoice): Promise<void> {
-        this.document.fontSize(8).font(this.defaultFont).text("FACTURE", (this.width / 2) -30, 210);
-    }
-
-    public async generateDetails(invoice: Invoice): Promise<void> {
+    public async generateFooter(invoice: Invoice) {
 
         let baseCol: number = this.width / 4 - 30;
         let col1: number = this.margeX;
@@ -27,13 +24,18 @@ export default class InvoiceBodyDefault {
         let col4: number = baseCol * 4;
 
         let lineHeight: number = 35;
+        let totalPadding: number = 100;
+        let total: number = 0;
 
         for (var i = 0; i < invoice.items.length; i++) {
             let item = invoice.items[i];
-            this.document.fontSize(8).font(this.defaultFont)
-                .text(item.description.padEnd(190, " "), col1, 230 + ((i + 1) * lineHeight), { width: baseCol * 2 })
-                .text(item.price.toString().padStart(12," "), col4, 230 + ((i + 1) * lineHeight))
-                .text(item.comment, col3, 230 + ((i + 1) * lineHeight));
+            total = total + item.price;
         }
+
+        let count = invoice.items.length;
+
+        this.document.fontSize(8).font(this.defaultFont)
+            .text("TOTAL", col3, 230 + ((count + 1) * lineHeight + totalPadding), { width: baseCol * 2 })
+            .text(total.toString().padStart(12, " "), col4, 230 + ((count + 1) * lineHeight + totalPadding));
     }
 }
