@@ -4,6 +4,9 @@ import Invoice from '../invoice/invoice.document';
 import ServInvoiceHeader from '../invoice/invoice.document.header.serv';
 import ServInvoiceBody from '../invoice/invoice.document.body.serv';
 import ServInvoiceFooter from '../invoice/invoice.document.footer';
+import ServiceSign from "../../document/pdf/pdf.serv";
+import { v4 as uuid } from 'uuid';
+
 
 export default class DefaultInvoice {
     
@@ -15,6 +18,8 @@ export default class DefaultInvoice {
     servDocumentHeader: ServInvoiceHeader;
     servDocumentBody: ServInvoiceBody;
     servDocumentFooter: ServInvoiceFooter;
+
+    public pdfRepository: string = "";
 
     public constructor() {
         this.document = new PDFDocument();
@@ -38,9 +43,11 @@ export default class DefaultInvoice {
         this.servDocumentFooter.defaultFontBold = this.defaultFontBold;
     }
 
-    public async create(invoice:Invoice):Promise<void> {
-       
-        this.document.pipe(fs.createWriteStream('output.pdf'));
+    public async create(invoice:Invoice):Promise<string> {
+
+        let id = uuid();
+        let path = this.pdfRepository + id + ".pdf";
+        this.document.pipe(fs.createWriteStream(path));
         this.generateHeader(invoice);
 
         this.document.moveTo(this.margeX, 200).lineTo(this.width - this.margeX, 200).fill('#000000');
@@ -55,6 +62,11 @@ export default class DefaultInvoice {
         this.generateFooter(invoice);
         this.document.moveDown();
         this.document.end();
+
+        let servSign = new ServiceSign();
+        servSign.sign(id);
+        
+        return id;
     }
 
     public async generateHeader(invoice: Invoice): Promise<void> {

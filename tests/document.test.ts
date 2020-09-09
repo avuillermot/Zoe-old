@@ -5,6 +5,7 @@ import Pdf from "./../src/document/pdf/pdf.serv";
 import ServiceInvoice from "./../src/document/invoice/invoice.document.serv";
 import Invoice from "./../src/document/invoice/invoice.document";
 import moment from "moment";
+import settings from "../src/config/config.dev";
 
 describe('Simple test must signed PDF', () => {
 
@@ -51,6 +52,7 @@ describe('Simple test must signed PDF', () => {
         invoice.items.push({ description: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 25.2, comment: "évacuation dechets" });
         invoice.items.push({ description: "elagage herablexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 125.2, comment: "évacuation dechets non" });
 
+        query.pdfRepository = settings.pdfRepository;
         const document = await query.create(invoice);
     });
 });
