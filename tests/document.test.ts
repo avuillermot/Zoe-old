@@ -53,6 +53,7 @@ describe('Simple test must signed PDF', () => {
         invoice.items.push({ description: "elagage herablexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 125.2, comment: "évacuation dechets non" });
 
         query.pdfRepository = settings.pdfRepository;
-        const document = await query.create(invoice);
+        const document = await query.createSigned(invoice, false);
+        console.log(document);
     });
 });

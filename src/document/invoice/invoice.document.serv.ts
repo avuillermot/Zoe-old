@@ -43,8 +43,13 @@ export default class DefaultInvoice {
         this.servDocumentFooter.defaultFontBold = this.defaultFontBold;
     }
 
-    public async create(invoice:Invoice):Promise<string> {
+    public async create(invoice: Invoice): Promise<{ id: string, hasError: boolean }> {
+        return await this.createSigned(invoice, false); 
+    }
 
+    public async createSigned(invoice: Invoice, signed: boolean): Promise<{ id: string, hasError: boolean }> {
+
+        let hasError = false;
         let id = uuid();
         let path = this.pdfRepository + id + ".pdf";
         this.document.pipe(fs.createWriteStream(path));
@@ -63,10 +68,20 @@ export default class DefaultInvoice {
         this.document.moveDown();
         this.document.end();
 
-        let servSign = new ServiceSign();
-        servSign.sign(id);
+        if (signed) {
+            let servSign = new ServiceSign();
+            hasError = !await servSign.sign(id);
+        }
+
+        if (hasError) {
+            fs.unlink(path, function (err) {
+                if (err) throw err;
+                // if no error, file has been deleted successfully
+                console.log('File deleted! : ' + path);
+            }); 
+        }
         
-        return id;
+        return { id: id, hasError: hasError };
     }
 
     public async generateHeader(invoice: Invoice): Promise<void> {
