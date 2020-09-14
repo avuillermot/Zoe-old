@@ -47,11 +47,12 @@ export default class DefaultInvoice {
         return await this.createSigned(invoice, false); 
     }
 
-    public async createSigned(invoice: Invoice, signed: boolean): Promise<{ id: string, hasError: boolean }> {
+    public async createSigned(invoice: Invoice, signed: boolean): Promise<{ id: string, hasError: boolean, filename: string }> {
 
         let hasError = false;
         let id = uuid();
-        let path = this.pdfRepository + id + ".pdf";
+        let filename = id + ".pdf";
+        let path = this.pdfRepository + filename;
         this.document.pipe(fs.createWriteStream(path));
         this.generateHeader(invoice);
 
@@ -81,7 +82,7 @@ export default class DefaultInvoice {
             }); 
         }
         
-        return { id: id, hasError: hasError };
+        return { id: id, hasError: hasError, filename: filename };
     }
 
     public async generateHeader(invoice: Invoice): Promise<void> {

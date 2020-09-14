@@ -1,13 +1,13 @@
 import "./../src/config"
 import { expect } from 'chai';
 import "mocha";
-import Pdf from "./../src/document/pdf/pdf.serv";
 import ServiceInvoice from "./../src/document/invoice/invoice.document.serv";
 import Invoice from "./../src/document/invoice/invoice.document";
 import moment from "moment";
-import settings from "../src/config/config.dev";
+import fs from 'fs';
+import settings from "../src/config/config";
 
-describe('Simple test must signed PDF', () => {
+describe('Simple test must generate PDF', () => {
 
     /*it('should return PDF as array byte', async () => {
         let query:Pdf = new Pdf();
@@ -15,7 +15,7 @@ describe('Simple test must signed PDF', () => {
         expect(document.data.data.length).greaterThan(0);
     });*/
 
-    it('should create a invoice', async () => {
+    it('Should create a invoice', async () => {
         let query: ServiceInvoice = new ServiceInvoice();
         let invoice: Invoice = new Invoice();
 
@@ -54,6 +54,8 @@ describe('Simple test must signed PDF', () => {
 
         query.pdfRepository = settings.pdfRepository;
         const document = await query.createSigned(invoice, false);
-        console.log(document);
+        expect(fs.existsSync(settings.pdfRepository + document.filename), "PDF file won't exists").equal(true);
+        fs.unlink(settings.pdfRepository + document.filename, function () { });
+        //console.log(document);
     });
 });

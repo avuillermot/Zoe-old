@@ -1,5 +1,5 @@
 import axios from 'axios';
-import settings from '../../config/config.dev'
+import settings from '../../config/config'
 
 export default class ServicePdf {
     public async sign(id: string): Promise<any> {
