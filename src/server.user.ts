@@ -4,7 +4,7 @@ import Query from "./user/user.serv";
 import ServerBase from "./server.base";
 
 /**
- * Allows to start an Express server (multiple)
+ * Allows to start an Express server (multiple2)
  */
 export default class ServerUser extends ServerBase {
 
